@@ -1,0 +1,212 @@
+---
+architecture: amd64
+config:
+  ExposedPorts:
+    4840/tcp: {}
+  Env:
+    - PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    - LANG=C.UTF-8
+    - GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D
+    - PYTHON_VERSION=3.10.13
+    - PYTHON_PIP_VERSION=23.0.1
+    - PYTHON_SETUPTOOLS_VERSION=65.5.1
+    - PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/c6add47b0abf67511cdfb4734771cbab403af062/public/get-pip.py
+    - PYTHON_GET_PIP_SHA256=22b849a10f86f5ddf7ce148ca2a31214504ee6c83ef626840fde6e5dcd809d11
+  Entrypoint:
+    - python
+  Cmd:
+    - opcua_main.pyc
+  WorkingDir: /app
+  ArgsEscaped: true
+  OnBuild: null
+created: 2023-11-17T05:08:42.10083319Z
+history:
+  - created: 2023-11-01T00:20:49.430103745Z
+    created_by: "/bin/sh -c #(nop) ADD
+      file:fbd8521c24ed758023728505c18d7a0d6d101bc77fd772a4af9b65049b943864 in /
+      "
+  - created: 2023-11-01T00:20:49.728500273Z
+    created_by: '/bin/sh -c #(nop)  CMD ["bash"]'
+    empty_layer: true
+  - created: 2023-10-15T21:49:12Z
+    created_by: ENV
+      PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    comment: buildkit.dockerfile.v0
+    empty_layer: true
+  - created: 2023-10-15T21:49:12Z
+    created_by: ENV LANG=C.UTF-8
+    comment: buildkit.dockerfile.v0
+    empty_layer: true
+  - created: 2023-10-15T21:49:12Z
+    created_by: "RUN /bin/sh -c set -eux; \tapt-get update; \tapt-get install -y
+      --no-install-recommends \t\tca-certificates \t\tnetbase \t\ttzdata \t;
+      \trm -rf /var/lib/apt/lists/* # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-10-15T21:49:12Z
+    created_by: ENV GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D
+    comment: buildkit.dockerfile.v0
+    empty_layer: true
+  - created: 2023-10-15T21:49:12Z
+    created_by: ENV PYTHON_VERSION=3.10.13
+    comment: buildkit.dockerfile.v0
+    empty_layer: true
+  - created: 2023-10-15T21:49:12Z
+    created_by: "RUN /bin/sh -c set -eux; \t\tsavedAptMark=\"$(apt-mark
+      showmanual)\"; \tapt-get update; \tapt-get install -y
+      --no-install-recommends \t\tdpkg-dev \t\tgcc \t\tgnupg
+      \t\tlibbluetooth-dev \t\tlibbz2-dev \t\tlibc6-dev \t\tlibdb-dev
+      \t\tlibexpat1-dev \t\tlibffi-dev \t\tlibgdbm-dev \t\tliblzma-dev
+      \t\tlibncursesw5-dev \t\tlibreadline-dev \t\tlibsqlite3-dev \t\tlibssl-dev
+      \t\tmake \t\ttk-dev \t\tuuid-dev \t\twget \t\txz-utils \t\tzlib1g-dev \t;
+      \t\twget -O python.tar.xz
+      \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYT\
+      HON_VERSION.tar.xz\"; \twget -O python.tar.xz.asc
+      \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYT\
+      HON_VERSION.tar.xz.asc\"; \tGNUPGHOME=\"$(mktemp -d)\"; export GNUPGHOME;
+      \tgpg --batch --keyserver hkps://keys.openpgp.org --recv-keys
+      \"$GPG_KEY\"; \tgpg --batch --verify python.tar.xz.asc python.tar.xz;
+      \tgpgconf --kill all; \trm -rf \"$GNUPGHOME\" python.tar.xz.asc; \tmkdir
+      -p /usr/src/python; \ttar --extract --directory /usr/src/python
+      --strip-components=1 --file python.tar.xz; \trm python.tar.xz; \t\tcd
+      /usr/src/python; \tgnuArch=\"$(dpkg-architecture --query
+      DEB_BUILD_GNU_TYPE)\"; \t./configure \t\t--build=\"$gnuArch\"
+      \t\t--enable-loadable-sqlite-extensions \t\t--enable-optimizations
+      \t\t--enable-option-checking=fatal \t\t--enable-shared \t\t--with-lto
+      \t\t--with-system-expat \t\t--without-ensurepip \t; \tnproc=\"$(nproc)\";
+      \tEXTRA_CFLAGS=\"$(dpkg-buildflags --get CFLAGS)\";
+      \tLDFLAGS=\"$(dpkg-buildflags --get LDFLAGS)\";
+      \tLDFLAGS=\"${LDFLAGS:--Wl},--strip-all\"; \tmake -j \"$nproc\"
+      \t\t\"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\" \t\t\"LDFLAGS=${LDFLAGS:-}\"
+      \t\t\"PROFILE_TASK=${PROFILE_TASK:-}\" \t; \trm python; \tmake -j
+      \"$nproc\" \t\t\"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\"
+      \t\t\"LDFLAGS=${LDFLAGS:--Wl},-rpath='\\$\\$ORIGIN/../lib'\"
+      \t\t\"PROFILE_TASK=${PROFILE_TASK:-}\" \t\tpython \t; \tmake install;
+      \t\tcd /; \trm -rf /usr/src/python; \t\tfind /usr/local -depth \t\t\\(
+      \t\t\t\\( -type d -a \\( -name test -o -name tests -o -name idle_test \\)
+      \\) \t\t\t-o \\( -type f -a \\( -name '*.pyc' -o -name '*.pyo' -o -name
+      'libpython*.a' \\) \\) \t\t\\) -exec rm -rf '{}' + \t; \t\tldconfig;
+      \t\tapt-mark auto '.*' > /dev/null; \tapt-mark manual $savedAptMark;
+      \tfind /usr/local -type f -executable -not \\( -name '*tkinter*' \\) -exec
+      ldd '{}' ';' \t\t| awk '/=>/ { so = $(NF-1); if (index(so,
+      \"/usr/local/\") == 1) { next }; gsub(\"^/(usr/)?\", \"\", so); printf
+      \"*%s\\n\", so }' \t\t| sort -u \t\t| xargs -r dpkg-query --search \t\t|
+      cut -d: -f1 \t\t| sort -u \t\t| xargs -r apt-mark manual \t; \tapt-get
+      purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \trm
+      -rf /var/lib/apt/lists/*; \t\tpython3 --version # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-10-15T21:49:12Z
+    created_by: 'RUN /bin/sh -c set -eux; 	for src in idle3 pydoc3 python3
+      python3-config; do 		dst="$(echo "$src" | tr -d 3)"; 		[ -s
+      "/usr/local/bin/$src" ]; 		[ ! -e "/usr/local/bin/$dst" ]; 		ln -svT
+      "$src" "/usr/local/bin/$dst"; 	done # buildkit'
+    comment: buildkit.dockerfile.v0
+  - created: 2023-10-15T21:49:12Z
+    created_by: ENV PYTHON_PIP_VERSION=23.0.1
+    comment: buildkit.dockerfile.v0
+    empty_layer: true
+  - created: 2023-10-15T21:49:12Z
+    created_by: ENV PYTHON_SETUPTOOLS_VERSION=65.5.1
+    comment: buildkit.dockerfile.v0
+    empty_layer: true
+  - created: 2023-10-15T21:49:12Z
+    created_by: ENV
+      PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/c6add47b0abf67511cdfb4734771cbab403af062/public/get-pip.py
+    comment: buildkit.dockerfile.v0
+    empty_layer: true
+  - created: 2023-10-15T21:49:12Z
+    created_by: ENV
+      PYTHON_GET_PIP_SHA256=22b849a10f86f5ddf7ce148ca2a31214504ee6c83ef626840fde6e5dcd809d11
+    comment: buildkit.dockerfile.v0
+    empty_layer: true
+  - created: 2023-10-15T21:49:12Z
+    created_by: "RUN /bin/sh -c set -eux; \t\tsavedAptMark=\"$(apt-mark
+      showmanual)\"; \tapt-get update; \tapt-get install -y
+      --no-install-recommends wget; \t\twget -O get-pip.py
+      \"$PYTHON_GET_PIP_URL\"; \techo \"$PYTHON_GET_PIP_SHA256 *get-pip.py\" |
+      sha256sum -c -; \t\tapt-mark auto '.*' > /dev/null; \t[ -z
+      \"$savedAptMark\" ] || apt-mark manual $savedAptMark > /dev/null;
+      \tapt-get purge -y --auto-remove -o
+      APT::AutoRemove::RecommendsImportant=false; \trm -rf /var/lib/apt/lists/*;
+      \t\texport PYTHONDONTWRITEBYTECODE=1; \t\tpython get-pip.py
+      \t\t--disable-pip-version-check \t\t--no-cache-dir \t\t--no-compile
+      \t\t\"pip==$PYTHON_PIP_VERSION\"
+      \t\t\"setuptools==$PYTHON_SETUPTOOLS_VERSION\" \t; \trm -f get-pip.py;
+      \t\tpip --version # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-10-15T21:49:12Z
+    created_by: CMD ["python3"]
+    comment: buildkit.dockerfile.v0
+    empty_layer: true
+  - created: 2023-11-17T05:08:24.101911977Z
+    created_by: "COPY /requirements/common.txt /tmp/ # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-11-17T05:08:24.161873911Z
+    created_by: "COPY /requirements/opcua.txt /tmp/ # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-11-17T05:08:30.030189997Z
+    created_by: "RUN /bin/sh -c pip install --upgrade pip # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-11-17T05:08:33.263233418Z
+    created_by: "RUN /bin/sh -c pip install -r /tmp/common.txt # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-11-17T05:08:40.97831523Z
+    created_by: "RUN /bin/sh -c pip install -r /tmp/opcua.txt # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-11-17T05:08:41.668299112Z
+    created_by: "RUN /bin/sh -c apt-get -y clean # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-11-17T05:08:41.729332207Z
+    created_by: "COPY /appconfig /appconfig # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-11-17T05:08:41.779792942Z
+    created_by: "COPY /build/common /app/common # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-11-17T05:08:41.832128109Z
+    created_by: "COPY /build/machine /app/machine # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-11-17T05:08:41.923528472Z
+    created_by: "COPY /build/message_handler /app/message_handler # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-11-17T05:08:41.979316051Z
+    created_by: "COPY /build/nats_client /app/nats_client # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-11-17T05:08:42.040841302Z
+    created_by: "COPY /build/opcua_main.pyc /app # buildkit"
+    comment: buildkit.dockerfile.v0
+  - created: 2023-11-17T05:08:42.10083319Z
+    created_by: WORKDIR /app
+    comment: buildkit.dockerfile.v0
+  - created: 2023-11-17T05:08:42.10083319Z
+    created_by: EXPOSE map[4840/tcp:{}]
+    comment: buildkit.dockerfile.v0
+    empty_layer: true
+  - created: 2023-11-17T05:08:42.10083319Z
+    created_by: ENTRYPOINT ["python"]
+    comment: buildkit.dockerfile.v0
+    empty_layer: true
+  - created: 2023-11-17T05:08:42.10083319Z
+    created_by: CMD ["opcua_main.pyc"]
+    comment: buildkit.dockerfile.v0
+    empty_layer: true
+os: linux
+rootfs:
+  type: layers
+  diff_ids:
+    - sha256:ec983b16636050e69677eb81537e955ab927757c23aaf73971ecf5f71fcc262a
+    - sha256:87579ac672ec5928830c3d44e850f826a545df026931d3436209a8858602aec7
+    - sha256:0a618bd86d5f95ed07e9d66657855cee3aeeea3587603eb6e48f6207a9fa363b
+    - sha256:bd130d2f909b4558243a614a8f0a6113b11de0389666a3e20dda6816804e2193
+    - sha256:a49a148fcd6aa719260a7dfb7865b7b4219ab1690ba14334aa8ed23cf506309f
+    - sha256:da9eae2ce149fd1c411a1c85102bf1e7774cae657f0417fe4ecc4129eea377d1
+    - sha256:b33dab5f18aa7196198f3f74c9bab849790ed03e4c07ad8fae41fedb7f815604
+    - sha256:6dba07d50c4b9f33d1706428f42cf3c21b4c77dbc2d5b7d823d39f9b9e83bf1e
+    - sha256:4a47d16f0d7523953af1597e33d44ecbb081d34f3b0041808d58047446685ea0
+    - sha256:0d05cf93d055bcf127833123833370f9ff17a209d8bc37d2418ddaf9c62911b8
+    - sha256:ce4777ac7a4b1aec640310364d9da346cfdb8c60505c19bfc7f727546afe8396
+    - sha256:a1cd52688f16bc25976e0201e68a101d4e98817634e59a4c56aa338587b38e69
+    - sha256:29643dd4e99aaf8fb366d86febad8a194dee8c1e458d3fe5229fbaea88ecc60b
+    - sha256:0d16432ce2d4d7932df53fefce05b58810d78f5e5980ab39971f0f69276ad247
+    - sha256:6dbad3cee7abf3a7fbaeb101a9025c9543271581f823e3746b89cb01c7ef8615
+    - sha256:98520d2ab110d6499965c42fc919db95cc761ab6a29e49d53863bbe2c39ef090
+    - sha256:3e3845dda60ebfdd7d52a5afccb404e75a5110414960f734cdcc1560894c5b88
+    - sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef

@@ -1,0 +1,23 @@
+---
+id: b865b88f8fcc182582792b145213a9ac881dfd20f73d90fdd8d3e61ee0f1a3a3
+parent: 0b70ab19cc8bf545067b47a5abbf0a3ee90ffdf6de672b6e337c1d4c75fedcba
+created: 1970-01-01T00:00:00Z
+container_config:
+  Hostname: ""
+  Domainname: ""
+  User: ""
+  AttachStdin: false
+  AttachStdout: false
+  AttachStderr: false
+  Tty: false
+  OpenStdin: false
+  StdinOnce: false
+  Env: null
+  Cmd: null
+  Image: ""
+  Volumes: null
+  WorkingDir: ""
+  Entrypoint: null
+  OnBuild: null
+  Labels: null
+os: linux

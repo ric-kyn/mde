@@ -1,0 +1,23 @@
+---
+id: 0e145022f173c5116e45a48d68dd477349d31ce076edf3dc76049c208bd391f0
+parent: 9b8effdb08d8b25510aa88948f9b6961fbfa79e56df2459f9ac71b81de3e845a
+created: '1970-01-01T00:00:00Z'
+container_config:
+  Hostname: ''
+  Domainname: ''
+  User: ''
+  AttachStdin: false
+  AttachStdout: false
+  AttachStderr: false
+  Tty: false
+  OpenStdin: false
+  StdinOnce: false
+  Env: 
+  Cmd: 
+  Image: ''
+  Volumes: 
+  WorkingDir: ''
+  Entrypoint: 
+  OnBuild: 
+  Labels: 
+os: linux

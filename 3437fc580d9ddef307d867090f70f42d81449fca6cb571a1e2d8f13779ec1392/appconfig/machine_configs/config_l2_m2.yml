@@ -1,0 +1,30 @@
+---
+nats:
+  nats_address: nats://10.30.50.1:4222
+  nats_client_name: L2_Machine2
+  request_topics:
+    - simulation.settings.l2_m2
+simulation_settings:
+  Uptime_Base: 3000
+  Uptime_Variation_Factor: 0.1
+  Downtime_Base: 60
+  Downtime_Variation_Factor: 0.5
+  CycleTime_Base: 30
+  CycleTime_Variation_Factor: 0.1
+  TaktTime_Base: 1
+  TakeTime_Variation_Factor: 0.1
+  FaultOccurrence_Factor: 0.73
+  FaultCode_Min_Value: 1
+  FaultCode_Max_Value: 4
+  FaultCode_L2_Min_Value: 1
+  FaultCode_L2_Max_Value: 6
+  ReasonCode_Min: 1
+  ReasonCode_Max: 10
+  ReasonCode_L2_Min: 1
+  ReasonCode_L2_Max: 10
+  QualityCode_Scrap_Min: 2
+  QualityCode_Scrap_Max: 6
+  BadPartInterval_Base: 100
+  BadPartInterval_Variation: 1
+  Temperature_LowerControlLimit: 15
+  Temperature_UpperControlLimit: 25

@@ -1,0 +1,2 @@
+nats-py==2.0.0
+ConfigArgParse==1.5.3
